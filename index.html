@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana (SOL) - Презентация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .presentation-wrapper {
+            position: relative;
+            width: 1000px;
+            height: 600px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .slides-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 600ms cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 60px 80px;
+            overflow: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .slide.dark {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+        }
+
+        .slide.light {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            color: #1a1a1a;
+        }
+
+        .slide h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .slide h2 {
+            font-size: 2.8rem;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .slide h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .slide p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .slide ul {
+            margin-left: 40px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .slide li {
+            margin-bottom: 15px;
+            list-style: disc;
+        }
+
+        .slide-title {
+            color: #38bdf8;
+        }
+
+        .slide.light .slide-title {
+            color: #0284c7;
+        }
+
+        .two-column {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .two-column > div {
+            flex: 1;
+        }
+
+        .two-column img {
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .three-column {
+            display: flex;
+            gap: 25px;
+            justify-content: space-between;
+        }
+
+        .card {
+            flex: 1;
+            padding: 25px;
+            border-radius: 8px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 2px solid #38bdf8;
+            transition: all 300ms ease;
+            cursor: pointer;
+        }
+
+        .slide.light .card {
+            background: rgba(2, 132, 199, 0.05);
+            border-color: #0284c7;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .slide.light .card:hover {
+            box-shadow: 0 15px 30px rgba(2, 132, 199, 0.2);
+            background: rgba(2, 132, 199, 0.1);
+        }
+
+        .card h4 {
+            color: #38bdf8;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .slide.light .card h4 {
+            color: #0284c7;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #38bdf8;
+            background: transparent;
+            color: #38bdf8;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 300ms ease;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide.light .nav-btn {
+            border-color: #0284c7;
+            color: #0284c7;
+        }
+
+        .nav-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
+        }
+
+        .slide.light .nav-btn:hover {
+            background: #0284c7;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(2, 132, 199, 0.5);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        .dots {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #334155;
+            cursor: pointer;
+            transition: all 200ms ease;
+            border: 2px solid transparent;
+        }
+
+        .slide.light .dot {
+            background: #cbd5e1;
+        }
+
+        .dot:hover {
+            transform: scale(1.3);
+            background: #38bdf8;
+        }
+
+        .slide.light .dot:hover {
+            background: #0284c7;
+        }
+
+        .dot.active {
+            background: #38bdf8;
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .slide.light .dot.active {
+            background: #0284c7;
+        }
+
+        .slide-counter {
+            font-size: 14px;
+            color: #94a3b8;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .slide.light .slide-counter {
+            color: #64748b;
+        }
+
+        .centered {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .centered h1 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+        }
+
+        .centered p {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-wrapper">
+    <div class="slides-container">
+        <!-- Slide 1: Title -->
+        <section class="slide dark centered active">
+            <h1 class="slide-title">Solana (SOL)</h1>
+            <p style="font-size: 1.8rem; margin-bottom: 30px;">Высокоскоростная блокчейн-платформа</p>
+            <p class="subtitle">Исследование будущего децентрализованных финансов</p>
+            <p class="subtitle" style="margin-top: 50px;">Ноябрь 2025</p>
+        </section>
+
+        <!-- Slide 2: What is Solana? -->
+        <section class="slide dark">
+            <h2 class="slide-title">Что такое Solana?</h2>
+            <ul>
+                <li>Блокчейн-платформа, основана Анатолием Яковенко в 2017 году</li>
+                <li>Решает проблемы масштабируемости Bitcoin и Ethereum</li>
+                <li>Механизм консенсуса Proof of History (PoH) для быстрых транзакций</li>
+                <li>Обрабатывает более 65 000 транзакций в секунду</li>
+            </ul>
+        </section>
+
+        <!-- Slide 3: History and Founding -->
+        <section class="slide dark">
+            <h2 class="slide-title">История и основание</h2>
+            <div class="two-column">
+                <div>
+                    <ul>
+                        <li>2017: Анатолий Яковенко публикует Proof of History</li>
+                        <li>Со-основатели: Greg Fitzgerald, Stephen Akridge, Raj Gokal</li>
+                        <li>Изначально "Loom", переименована в "Solana"</li>
+                        <li>Май 2018: Запуск Solana Labs</li>
+                        <li>Март 2020: Mainnet запущена</li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/82d0f5a8-a99a-4496-bb40-01c45ed7ad4c" alt="Anatoly Yakovenko">
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Proof of History -->
+        <section class="slide dark">
+            <h2 class="slide-title">Ключевая инновация: Proof of History</h2>
+            <p style="margin-bottom: 30px;">Решает проблему синхронизации времени в распределённых системах</p>
+            <ul>
+                <li>Создаёт криптографическое доказательство времени событий</li>
+                <li>Устраняет необходимость глобального консенсуса по порядку времени</li>
+                <li>Резко увеличивает пропускную способность и снижает задержку</li>
+            </ul>
+        </section>
+
+        <!-- Slide 5: Technical Specs -->
+        <section class="slide dark">
+            <h2 class="slide-title">Технические характеристики</h2>
+            <div class="three-column">
+                <div class="card">
+                    <h4>Производительность</h4>
+                    <p>65 000+ TPS</p>
+                    <p>~400мс время блока</p>
+                </div>
+                <div class="card">
+                    <h4>Сеть</h4>
+                    <p>Параллельная обработка</p>
+                    <p>Сверхнизкие комиссии</p>
+                </div>
+                <div class="card">
+                    <h4>Консенсус</h4>
+                    <p>Proof of History</p>
+                    <p>Энергоэффективно</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 6: Market Metrics -->
+        <section class="slide dark">
+            <h2 class="slide-title">Текущие рыночные метрики</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 30px;">
+                <div style="background: rgba(56, 189, 248, 0.1); padding: 25px; border-radius: 8px; border-left: 4px solid #38bdf8;">
+                    <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 8px; font-weight: 600;">Текущая цена</p>
+                    <p style="font-size: 2rem; color: #38bdf8; font-weight: 700; margin: 0;">$142</p>
+                </div>
+                <div style="background: rgba(56, 189, 248, 0.1); padding: 25px; border-radius: 8px; border-left: 4px solid #38bdf8;">
+                    <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 8px; font-weight: 600;">Рыночная капитализация</p>
+                    <p style="font-size: 2rem; color: #38bdf8; font-weight: 700; margin: 0;">$80B</p>
+                </div>
+                <div style="background: rgba(56, 189, 248, 0.1); padding: 25px; border-radius: 8px; border-left: 4px solid #38bdf8;">
+                    <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 8px; font-weight: 600;">Циркулирующее предложение</p>
+                    <p style="font-size: 2rem; color: #38bdf8; font-weight: 700; margin: 0;">559.4M</p>
+                </div>
+                <div style="background: rgba(56, 189, 248, 0.1); padding: 25px; border-radius: 8px; border-left: 4px solid #38bdf8;">
+                    <p style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 8px; font-weight: 600;">24ч объём торговли</p>
+                    <p style="font-size: 2rem; color: #38bdf8; font-weight: 700; margin: 0;">$5B+</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px; color: #cbd5e1;">Рейтинг: Топ-5 криптовалюта по капитализации</p>
+        </section>
+
+        <!-- Slide 7: Price Evolution -->
+        <section class="slide dark">
+            <h2 class="slide-title">Эволюция цены</h2>
+            <ul>
+                <li><strong>2020:</strong> Год запуска - минимальная торговля</li>
+                <li><strong>2021:</strong> Пик $250 во время DeFi boom</li>
+                <li><strong>2022:</strong> Падение после кризиса FTX</li>
+                <li><strong>2023-2024:</strong> Восстановление экосистемы</li>
+                <li><strong>2025:</strong> Стабильность в диапазоне $140-150</li>
+            </ul>
+        </section>
+
+        <!-- Slide 8: Ecosystem -->
+        <section class="slide dark">
+            <h2 class="slide-title">Экосистема и варианты использования</h2>
+            <div class="three-column">
+                <div class="card">
+                    <h4>DeFi</h4>
+                    <p>Кредитование, DEX, фарм доходов</p>
+                </div>
+                <div class="card">
+                    <h4>NFT</h4>
+                    <p>Цифровые коллекции и искусство</p>
+                </div>
+                <div class="card">
+                    <h4>Web3</h4>
+                    <p>Игры, социальные сети, коммерция</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 9: Advantages -->
+        <section class="slide dark">
+            <h2 class="slide-title">Преимущества Solana</h2>
+            <ul>
+                <li>Исключительная скорость: 65 000+ TPS против 12-15 TPS Ethereum</li>
+                <li>Низкие комиссии: Доли цента за транзакцию</li>
+                <li>Энергетическая эффективность: Ниже потребление, чем PoW</li>
+                <li>Растущее сообщество разработчиков и партнёры</li>
+            </ul>
+        </section>
+
+        <!-- Slide 10: Challenges -->
+        <section class="slide dark">
+            <h2 class="slide-title">Вызовы и риски</h2>
+            <div class="two-column">
+                <div>
+                    <ul>
+                        <li>Отключения и проблемы стабильности сети</li>
+                        <li>Кризис FTX повредил репутацию</li>
+                        <li>Риски централизации валидаторов</li>
+                        <li>Конкуренция других Layer-1 блокчейнов</li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/19fd8bea-5b88-41d8-9e7c-a8674b21591c" alt="Solana">
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 11: Future Outlook -->
+        <section class="slide dark">
+            <h2 class="slide-title">Будущие перспективы</h2>
+            <ul>
+                <li>Оптимизация и обновления сети</li>
+                <li>Расширение институционального внедрения</li>
+                <li>Рост децентрализованных приложений</li>
+                <li>Интеграция с проектами AI и ML</li>
+                <li>Прогнозы цены: $230-$500+ к 2026 году</li>
+            </ul>
+        </section>
+
+        <!-- Slide 12: Key Takeaways -->
+        <section class="slide dark centered">
+            <h2 class="slide-title">Ключевые выводы</h2>
+            <p>Solana — это значительная эволюция в технологии блокчейна с революционными преимуществами скорости и масштабируемости</p>
+            <p class="subtitle" style="margin-top: 40px;">Будущее децентрализованных приложений зависит от платформ, таких как Solana, которые приоритизируют производительность</p>
+        </section>
+
+        <!-- Slide 13: Ecosystem Diagram -->
+        <section class="slide dark centered">
+            <h2 class="slide-title">Экосистема Solana</h2>
+            <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/a69e97b4-89b1-4ab9-93da-1322baa4dc96" alt="Solana Ecosystem" style="max-width: 90%; max-height: 400px; object-fit: contain; margin-top: 20px; border-radius: 8px;">
+        </section>
+
+        <!-- Slide 14: Proof of History Technical -->
+        <section class="slide dark centered">
+            <h2 class="slide-title">Как работает Proof of History</h2>
+            <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/68cec819-ef2d-4c21-b212-dae26310ff37" alt="Proof of History" style="max-width: 90%; max-height: 400px; object-fit: contain; margin-top: 20px; border-radius: 8px;">
+        </section>
+
+        <!-- Slide 15: Thank You -->
+        <section class="slide dark centered">
+            <h1 class="slide-title">Спасибо!</h1>
+            <p style="font-size: 1.6rem;">Вопросы?</p>
+            <p style="margin-top: 40px;">Solana: https://solana.com</p>
+            <p class="subtitle">Работает на Proof of History</p>
+        </section>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" onclick="prevSlide()">←</button>
+        <div class="dots" id="dots"></div>
+        <div class="slide-counter"><span id="current">1</span> / <span id="total">15</span></div>
+        <button class="nav-btn" onclick="nextSlide()">→</button>
+    </div>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    document.getElementById('total').textContent = totalSlides;
+
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (n + totalSlides) % totalSlides;
+        slides[currentSlide].classList.add('active');
+        document.getElementById('current').textContent = currentSlide + 1;
+        updateDots();
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+
+    function updateDots() {
+        const dotsContainer = document.getElementById('dots');
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === currentSlide ? ' active' : '');
+            dot.onclick = () => showSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
+
+    updateDots();
+</script>
+
+</body>
+</html>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Что такое Solana?</h2>
+        <div class="fill-height">
+            <ul class="text-lg" style="color: #cbd5e1;">
+                <li>Блокчейн-платформа, основана Анатолием Яковенко в 2017 году</li>
+                <li>Решает проблемы масштабируемости Bitcoin и Ethereum</li>
+                <li>Механизм консенсуса Proof of History (PoH) для быстрых транзакций</li>
+                <li>Обрабатывает более 65 000 транзакций в секунду</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">История и основание</h2>
+        <div class="fill-height row gap-lg items-start">
+            <div class="fill-width">
+                <ul class="text-lg" style="color: #cbd5e1;">
+                    <li>2017: Анатолий Яковенко публикует Proof of History</li>
+                    <li>Со-основатели: Greg Fitzgerald, Stephen Akridge, Raj Gokal</li>
+                    <li>Изначально "Loom", переименована в "Solana"</li>
+                    <li>Май 2018: Запуск Solana Labs</li>
+                    <li>Март 2020: Mainnet запущена</li>
+                </ul>
+            </div>
+            <div class="fill-width">
+                <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/82d0f5a8-a99a-4496-bb40-01c45ed7ad4c" alt="Anatoly Yakovenko" style="max-height: 280px; object-fit: cover; border-radius: 8px;">
+            </div>
+        </div>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Ключевая инновация: Proof of History</h2>
+        <p class="text-lg mb-6" style="color: #cbd5e1;">
+            Proof of History решает проблему синхронизации времени в распределённых системах
+        </p>
+        <ul class="text-lg" style="color: #cbd5e1;">
+            <li>Создаёт криптографическое доказательство времени событий</li>
+            <li>Устраняет необходимость глобального консенсуса по порядку времени</li>
+            <li>Резко увеличивает пропускную способность и снижает задержку</li>
+        </ul>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="text-center mb-8" style="color: #38bdf8;">Технические характеристики</h2>
+        <div class="fill-height row gap-lg">
+            <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 2rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); transition: all 300ms ease; cursor: pointer;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 20px rgba(56, 189, 248, 0.6)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'">
+                <h3 class="mb-4" style="color: #38bdf8;">Производительность</h3>
+                <p style="color: #cbd5e1;">65 000+ TPS</p>
+                <p style="color: #cbd5e1;">~400мс время блока</p>
+            </div>
+            <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 2rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); transition: all 300ms ease; cursor: pointer;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 0 20px rgba(56, 189, 248, 0.6)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'">
+                <h3 class="mb-4" style="color: #38bdf8;">Сеть</h3>
+                <p style="color: #cbd5e1;">Параллельная обработка</p>
+                <p style="color: #cbd5e1;">Сверхнизкие комиссии</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Текущие рыночные метрики</h2>
+        <div class="fill-height">
+            <ul class="text-lg" style="color: #cbd5e1;">
+                <li>Текущая цена: ~$142 USD (Ноябрь 2025)</li>
+                <li>Рыночная капитализация: ~$80 миллиардов</li>
+                <li>Циркулирующее предложение: 559.4 млн SOL</li>
+                <li>Рейтинг: Топ-5 криптовалюта по капитализации</li>
+                <li>24ч объём торговли: $5+ миллиардов</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Эволюция цены</h2>
+        <ul class="text-lg" style="color: #cbd5e1;">
+            <li>2020: Год запуска - минимальная торговля</li>
+            <li>2021: Пик $250 во время DeFi boom</li>
+            <li>2022: Падение после кризиса FTX</li>
+            <li>2023-2024: Восстановление экосистемы</li>
+            <li>2025: Стабильность в диапазоне $140-150</li>
+        </ul>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Экосистема и варианты использования</h2>
+        <div class="fill-height row gap-md">
+            <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); transition: all 300ms ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 30px rgba(56, 189, 248, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'">
+                <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">DeFi</h4>
+                <p style="color: #cbd5e1; font-size: 0.95rem;">Кредитование, DEX, фарм доходов</p>
+            </div>
+            <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); transition: all 300ms ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 30px rgba(56, 189, 248, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'">
+                <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">NFT</h4>
+                <p style="color: #cbd5e1; font-size: 0.95rem;">Цифровые коллекции и искусство</p>
+            </div>
+            <div class="fill-width" style="background-color: #1e293b; color: #f1f5f9; padding: 1.5rem; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); transition: all 300ms ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 30px rgba(56, 189, 248, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'">
+                <h4 style="color: #38bdf8; margin-bottom: 0.5rem;">Web3</h4>
+                <p style="color: #cbd5e1; font-size: 0.95rem;">Игры, социальные сети, коммерция</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Преимущества Solana</h2>
+        <ul class="text-lg" style="color: #cbd5e1;">
+            <li>Исключительная скорость: 65 000+ TPS против 12-15 TPS Ethereum</li>
+            <li>Низкие комиссии: Доли цента за транзакцию</li>
+            <li>Энергетическая эффективность: Ниже потребление, чем PoW</li>
+            <li>Растущее сообщество разработчиков и партнёры</li>
+        </ul>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="mb-6" style="color: #38bdf8;">Вызовы и риски</h2>
+        <div class="fill-height row gap-lg items-start">
+            <div class="fill-width">
+                <ul class="text-lg" style="color: #cbd5e1;">
+                    <li>Отключения и проблемы стабильности сети</li>
+                    <li>Кризис FTX повредил репутацию</li>
+                    <li>Риски централизации валидаторов</li>
+                    <li>Конкуренция других Layer-1 блокчейнов</li>
+                </ul>
+            </div>
+            <div class="fill-width">
+                <img src="https://agi-prod-file-upload-public-main-use1.s3.amazonaws.com/19fd8bea-5b88-41d8-9e7c-a8674b21591c" alt="Solana Founder" style="max-height: 280px; object-fit: cover; border-radius: 8px;">
+            </div>
+        </div>
+    </section>
+
+    <section class="slide p-16 col" style="background-color: #0f172a; color: #f1f5f9;">
+        <h2 class="text-center mb-8" style="color: #38bdf8;">Будущие перспективы</h2>
+        <div class="fill-height">
+            <ul class="text-lg" style="color: #cbd5e1;">
+                <li>Оптимизация и обновления сети</li>
+                <li>Расширение институционального внедрения</li>
+                <li>Рост децентрализованных приложений</li>
+                <li>Интеграция с проектами AI и ML</li>
+                <li>Прогнозы цены: $230-$500+ к 2026 году</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="slide p-16 col center" style="background-color: #020617; color: #f1f5f9;">
+        <h2 class="text-5xl mb-6" style="color: #38bdf8;">Ключевые выводы</h2>
+        <p class="text-xl mb-4" style="color: #cbd5e1;">Solana — это значительная эволюция в технологии блокчейна</p>
+        <p class="text-xl mb-4" style="color: #cbd5e1;">с революционными преимуществами скорости и масштабируемости</p>
+        <p class="text-lg" style="color: #94a3b8;">Будущее децентрализованных приложений зависит от</p>
+        <p class="text-lg" style="color: #94a3b8;">платформ, таких как Solana, которые приоритизируют производительность</p>
+    </section>
+
+    <section class="slide p-16 col center" style="background-color: #020617; color: #f1f5f9;">
+        <h2 class="text-6xl mb-8" style="color: #38bdf8;">Спасибо!</h2>
+        <p class="text-2xl mb-6" style="color: #cbd5e1;">Вопросы?</p>
+        <p class="text-lg" style="color: #94a3b8;">Solana: https://solana.com</p>
+        <p class="text-sm mt-8" style="color: #94a3b8;">Работает на Proof of History</p>
+    </section>
+</div>
+
+<div style="display: flex; flex-direction: column; align-items: center;">
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="prevSlide()">←</button>
+        <button class="nav-btn" onclick="nextSlide()">→</button>
+    </div>
+    
+    <div class="slide-counter">
+        <span id="current">1</span> / <span id="total">13</span>
+    </div>
+    
+    <div class="slide-dots" id="dots"></div>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (n + totalSlides) % totalSlides;
+        slides[currentSlide].classList.add('active');
+        
+        document.getElementById('current').textContent = currentSlide + 1;
+        updateDots();
+    }
+    
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+    
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+    
+    function updateDots() {
+        const dotsContainer = document.getElementById('dots');
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === currentSlide ? ' active' : '');
+            dot.onclick = () => showSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+    });
+    
+    updateDots();
+</script>
+
+</body>
+</html>
